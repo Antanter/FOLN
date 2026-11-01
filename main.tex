@@ -1,0 +1,240 @@
+\documentclass[11pt,a4paper]{article}
+
+% ---------- Encoding and language ----------
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+% ---------- Page ----------
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage[dvipsnames]{xcolor}
+\usepackage[colorlinks=true,linkcolor=NavyBlue,citecolor=NavyBlue,urlcolor=NavyBlue]{hyperref}
+
+% ---------- Math ----------
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{bm}
+\usepackage[nameinlink,noabbrev]{cleveref} % must come after amsmath and hyperref
+
+% ---------- Theorem environments ----------
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{exercise}[theorem]{Exercise}
+
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+\newtheorem*{notation}{Notation}
+
+% cleveref names
+\crefname{theorem}{Theorem}{Theorems}
+\crefname{lemma}{Lemma}{Lemmas}
+\crefname{definition}{Definition}{Definitions}
+\crefname{equation}{equation}{equations}
+
+% ---------- Macros ----------
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\E}{\mathbb{E}}
+\renewcommand{\P}{\mathbb{P}}
+\newcommand{\F}{\mathcal{F}}
+\newcommand{\1}{\mathbf{1}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\abs}[1]{\left|#1\right|}
+\newcommand{\norm}[1]{\left\|#1\right\|}
+\newcommand{\set}[1]{\left\{#1\right\}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}{\operatorname{Cov}}
+\DeclarePairedDelimiter{\ip}{\langle}{\rangle}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+% ---------- Headers and footers ----------
+\pagestyle{fancy}
+\setlength{\headheight}{14pt}
+\fancyhf{}
+\fancyhead[L]{\small\textit{Course Title}}
+\fancyhead[R]{\small\leftmark}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% ---------- Title ----------
+\title{\textbf{Course Title}\\[4pt]\large Lecture Notes}
+\author{Author}
+\date{\today}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\newpage
+
+% =====================================================
+\section{Options}
+% =====================================================
+
+\subsection{Basic Results}
+
+\begin{definition}[Stock]\label{def:first}
+  Amount of money a company owns (Assets) is a sum of what it owes (Liabilities) and what belongs to shareholders (Equity). Then a tradable unit of an equity is a stock. Company can be private (stocks are held by private investors), in the initial public offering (stocks are sold to public investors) or public (stocks are traded between investors in financial markets). Price of a share at time $T$ is denoted $S_T$
+\end{definition}
+
+\begin{definition}[Option]
+  Option is a bilateral asymmetric contract, that allows side who buys (longs) an option to either buy (call) or sell (put) a share, and on the other hand it obliges the side that sells (shorts) to sell/buy this share accordingly. Fulfilling the contract is called exercise. The price of an option is constant, denoted with $K$ and named strike. The payment which buyer pays to the seller for an option is called premium, and is denoted with $C$ or $P$ depending on whether it's call or put. Option has an expiry time T, after which contract expires. European option lets you only fulfill an option at the expiry time $T$. American option lets you exercise at any time $\le T$.
+\end{definition}
+
+\begin{definition}[Option Payoff]
+  Define $C_T=\max\{0,S_T-K\}$ is a long call payoff, and $P_T=\max\{0,K-S_T\}$ is a long put payoff.
+\end{definition}
+
+\begin{remark}
+  For a share price $S_T$ and call and put with strikes $K$, having $S_T>K$ will lead us to exercising a call and selling the share, with the payoff $S_T-K$, while $P_T=0$, because exercising a put will pay us $K$ units, and we have $S_T>K$. When $K>S_T$, it works the other way around.
+\end{remark}
+
+\begin{definition}[Portfolio]
+  Portfolio is a set of bought shares, calls and puts. Denote portfolio value by $V_T$.
+\end{definition}
+
+\begin{definition}[Arbitrage]
+  Let $V_0=0$. An arbitrage is a risk-free strategy where $\exists T_0<\infty$, s.t. $\mathbb{P}(V_{T_0}\ge0)=1$ and $\mathbb{P}(V_{T_0}>0)>0$
+\end{definition}
+
+\begin{proposition}[Strike Arbitrage]
+  Let us have either two calls or two puts. Then, if $K_1<K_2$ and $C_{T,1}<C_{T,2}$ or $P_{T,1}>P_{T,2}$, we have an arbitrage.
+\end{proposition}
+
+\begin{definition}[Option Payoff]
+  Define $C_T=-\max\{0,S_T-K\}$ is a short call payoff, and $P_T=-\max\{0,K-S_T\}$ is a short put payoff.
+\end{definition}
+
+\begin{proposition}[Implied Option Probabilities]
+  Let us have $S_0$, $B\sim\mathrm{Bernoulli}(q)$, and $S_T=a+(b-a)B$. Then, probability implied by possible option price outcomes is $S_0=\mathbb{E}^Q[S_T]=a+(b-a)q\implies q=\frac{S_0-a}{b-a}$, under some risk-neutral measure $Q$.
+\end{proposition}
+
+\begin{definition}[Interest Rate]
+  Interest rate $r$ is a percentage value of value of money change, measured in years.
+\end{definition}
+
+\begin{definition}[Dividends]
+  Dividents $D$ are one-time payment by the company to shareholders per-share. Since money leaves company, the price of the share after dividends day deacreses. Formally, let $T_0$ be a time when dividends are paid off, then $\lim\limits_{t\to T_0^-}S_t=S_{T_0}+D$
+\end{definition}
+
+\begin{definition}[Expected Option Payoff]
+  Let $S_T$ be distributed under market-implied measure $Q$, $r$ is an interest rate, $T$ is an expiry date, $f_Q:\mathbb{R}\rightarrow[0,\infty)$ is a probability density function. Then, the expected payoff of the call is $e^{-rT}\displaystyle\int_{K}^{\infty}(s-K)f_Q(s)ds$
+\end{definition}
+
+\begin{lemma}[Time Value]
+  Let us have an option. Then, we can split its value into two part, intrinsic and time value. Formally, $V=C_0+TV$, where $TV\ge0$.
+\end{lemma}
+
+\begin{corollary}[American Arbitrage]
+  Let us have either two almost identical American options, that have expiry times $T_1,T_2$, with $T_2>T_1$. Then, $V_{T_1,1}\ge V_{T_2,2}$
+\end{corollary}
+
+\begin{proposition}[Option Price Variance]
+  Assume stock price growth each time unit by $D$ units. Then, the variance at each $T$ is $\sum\limits_{t=0}^T\Var(D)=T\Var(D)=T\sigma^2$, therefore standard deviation is $\sigma\sqrt{T}$
+\end{proposition}
+
+\begin{lemma}[Put-Call Parity]
+  Let us have a call and a put. Then, $C_T-P_T=S_T-K$
+\end{lemma}
+
+\begin{proof}[Put-Call Parity]
+  $C_T-P_T=\max\{0,S_T-K\}-\max\{0,K-S_T\}$.\\
+  If $S_T>K$, $\max\{0,S_T-K\}-\max\{0,K-S_T\}=S_T-K$.\\
+  If $S_T<K$, $\max\{0,S_T-K\}-\max\{0,K-S_T\}=-(K-S_T)=S_T-K$.
+\end{proof}
+
+\begin{remark}
+  You can always rewrite it as $C_T=P_T+S_T-K$
+\end{remark}
+
+\begin{definition}[Price Value]
+  Let us have a share worth $S_0$, and consider an option with a strike price $K$. Then, $PV(K)=Ke^{-rT}$ is a price value of $K$, meaning a sum, that you need to invest under interest rate $r$ for time period $T$ to get $K$.
+\end{definition}
+
+\begin{lemma}[Past Time Put-Call Parity]
+  Let us have a call and a put. Then, $C_0-P_0=S_0-Ke^{-rT}$.
+\end{lemma}
+
+\begin{proof}
+  Proof is similar to the $T$ case, but we consider $K$ to be a strike, and it's worth $Ke^{-rT}$ at the time $0$
+\end{proof}
+
+\begin{lemma}[Funding Spread]
+  Let us have different interest rates for borrowing and lending, say $r_b$ and $r_l$. Then, $S_0-Ke^{-r_lT}\le C-P\le S_0-Ke^{-r_bT}$.
+\end{lemma}
+
+\begin{proof}
+  Borrow $Ke^{-r_bT}$ and buy a share $S_0$ will be worth $S_0-Ke^{-rT_b}$, and pays off $S_T-K$, which is the same as $C-P$. If there's no arbitrage, then $C-P\le S_0-Ke^{-r_bT}$.\\ \\
+  Same for the lowerbound, we sell a share $S_0$ and lend $Ke^{-r_lT}$ will result in $Ke^{-r_lT}-S_0$, with payoff $K-S_T$, which is the same as $P-C$, and again, if there's no arbitrage, we have $S_0-Ke^{-r_lT}\le C-P$.\\ \\
+  Thus, $S_0-Ke^{-r_lT}\le C-P\le S_0-Ke^{-r_bT}$
+\end{proof}
+
+\subsection{Pricing Models}
+
+\subsubsection{Linear Model}
+
+\begin{definition}[Linear Option Pricing Model]
+  Let us consider two possible cases for option price at $T$, $C_{T,1}$ and $C_{T,2}$. A linear model $M:C_{T,i}=\beta_1+\beta_2S_{T,i}$ models the price of an option. The system has only two variable, hence it's solvable, with the coefficients $\beta_2=\frac{C_{T,1}-C_{T,2}}{S_{T,1}-S_{T,2}},\beta_1=C_{T,1}-\beta_2S_{T,1}$. Assuming time is $0$, we obtain $C_0=\beta_1S_0+\beta_2e^{-rT}$. The last portfolio is called replicating. 
+\end{definition}
+
+\begin{remark}
+  Think of it as of $\beta_2$ portion of shares we buy/sell, + $\beta_1e^{-rT}$ portion of money that we lend/borrow to get in the end $\beta_1$. That's is because $\beta_1$ denotes the cash we have on hands, and it grows/leans with the rate $r$, while $\beta_2$ is a portion of shares we have.
+\end{remark}
+
+\begin{proposition}[Interest Rate Implied Option Probabilities]
+  Let us have $S_0$, $B\sim\mathrm{Bernoulli}(q)$, $S_T=a+(b-a)B$, and interest rate $\mathbb{E}^Q[S_T]=S_0e^{rT}$. Then, probability implied by share price outcomes is $q=\frac{S_0e^{rT}-a}{b-a}$, under some risk-neutral measure $Q$. Furthermore, if we consider an option price at time $0$, then $C_0=e^{-rT}(qb+(1-q)a)$.
+\end{proposition}
+
+\begin{proof}
+  1) $S_0e^{rT}=\mathbb{E}^Q[S_T]=a+(b-a)\mathbb{E}[B]=a+(b-a)q\implies q=\frac{S_0e^{rT}-a}{b-a}$\\
+  2) $C_0=\beta_1e^{-rT}+\beta_2S_0=\beta_1e^{-rT}+\beta_2e^{-rT}\mathbb{E}^Q[S_T]=e^{-rT}\mathbb{E}[\beta_1+\beta_2S_T]=e^{-rT}\mathbb{E}[C_T]=e^{-rT}(qb+(1-q)a)$
+\end{proof}
+
+\begin{corollary}
+  $a<S_0e^{rT}<b\iff0<q<1$
+\end{corollary}
+
+\subsubsection{Binomial Model}
+
+\begin{definition}[Binomial Option Pricing Model]
+  Let us consider two multipliers $u>0$ and $d<0$ of the original option price,
+  and time division $0\le\Delta t\le...\le(n-1)\Delta t\le T$ where $\Delta t=T/n$.
+  Hence, we can construct a binary tree with a root $S_0$, and each next layer of two children, with prices $S_t=S_{t-1}u$ and $S_t=S_{t-1}d$.
+  Leafs are all possible combinations of $u,d$ resulting in $S_T$.
+\end{definition}
+
+\begin{remark}
+  European option pricing trees could be execised only at leafs, while American ones can do so at each node.
+  Hence, option payoff at the node of american tree is a maximum of exercising at this point, or continuing with the interest rate.
+\end{remark}
+
+\begin{proposition}
+  Multipliers are implied by $u=e^{\sigma\sqrt{\Delta t}}$, $d=e^{-\sigma\sqrt{\Delta t}}$
+\end{proposition}
+
+Reasoning behind these multipliers is that they, as $\Delta t\rightarrow0$, shall provide the same volatility as Black-Sholes formula.
+For now, assume that $Var(\ln\frac{S_{t+\Delta t}}{S_t})=\sigma^2\Delta t$ in Black-Sholes.
+
+\begin{proof}
+  In one step log-payoff is either $\ln u$ or $\ln d$. Let probability of price growing is $q$,
+  then $\Var(\ln\frac{S_{t+\Delta t}}{S_t})=Var(\ln{d}+(\ln{u}-\ln{d})q)=(\ln{u}-\ln{d})^2\Var(q)=(\ln{u}-\ln{d})^2q(1-q)$.
+  Assuming $d=\frac{1}{u}$ and $q=\frac{1}{2}$, we have $(\ln{u}-\ln{d})^2q(1-q)=4\frac{1}{4}(\ln{u})^2=(\ln{u})^2=\sigma^2\Delta t$.
+  From which we have $\ln{u}=\sigma\sqrt{\Delta t}$
+\end{proof}
+
+
+\end{document}
