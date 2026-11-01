@@ -62,6 +62,9 @@
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\argmin}{arg\,min}
 
+
+\newcommand{\aseq}{\overset{\text{a.s.}}{=}}
+
 % ---------- Headers and footers ----------
 \pagestyle{fancy}
 \setlength{\headheight}{14pt}
@@ -236,5 +239,35 @@ For now, assume that $Var(\ln\frac{S_{t+\Delta t}}{S_t})=\sigma^2\Delta t$ in Bl
   From which we have $\ln{u}=\sigma\sqrt{\Delta t}$
 \end{proof}
 
+Log return is distributed as a normal distribution, hence we can rewrite it to as $\ln\frac{S_{t+\Delta t}}{S_t}=m+aZ,Z\sim N(0,1)$,
+where $a=\sigma\sqrt{\Delta t}$. It means, that $S_T=S_0e^{m+aZ}$. We want to find $\mathbb{E}^Q[S_T]=\mathbb{E}[S_0e^{m+aZ}]$.
+Using LOTUS with $g(z)=e^{az}$ we get $\mathbb{E}[S_0e^{m+aZ}]=S_0e^m\mathbb{E}[e^{aZ}]=S_0e^m\displaystyle\int_{-\infty}^{\infty}e^{az}\frac{1}{\sqrt{2\pi}}e^{-\frac{z^2}{2}}dz=S_0e^m\frac{1}{\sqrt{2\pi}}\displaystyle\int_{-\infty}^{\infty}e^{-\frac{z^2+2az}{2}}dz$.
+Adding and substracting $a^2$: $S_0e^m\frac{1}{\sqrt{2\pi}}\displaystyle\int_{-\infty}^{\infty}e^{\frac{-(z-a)^2+a^2}{2}}dz=S_0e^me^{\frac{a^2}{2}}\frac{1}{\sqrt{2\pi}}\displaystyle\int_{-\infty}^{\infty}e^{-\frac{(z-a)^2}{2}}dz$.
+$\displaystyle\int_{-\infty}^{\infty}e^{-\frac{(z-a)^2}{2}}dz=\sqrt{2\pi}$, so $\mathbb{E}[S_0e^{m+aZ}]=S_0e^{m+\frac{a^2}{2}}$. But we also have $\mathbb{E}^Q[S_T]=S_0e^{rT}$,
+hence in no-arbitrage exponents must match: $m+\frac{a^2}{2}=rT\implies m=rT-\frac{a^2}{2}=rT-\frac{\sigma^2T}{2}=(r-\frac{\sigma^2}{2})T$.
+From what we have seen we finally deduce that $S_T=S_0e^{(r-\frac{\sigma^2}{2})T+\sigma\sqrt{T}Z}$
+
+\subsubsection{Wiener Process Model}
+
+\begin{definition}[Wiener Process]
+  For set of times $T\subseteq [0,\infty)$ Wiener process $\{W_t:t\in T\}$ is defined by the following:
+  \begin{enumerate}
+    \item $W_0\aseq0$
+    \item $\forall t_i\in T,\ 0\le t_1<t_2,\ W_{t_2}-W_{t_1}\sim N(0,\sigma^2(t_2-t_1))$
+    \item $\forall t_i\in T,\ 0\le t_1<t_2\le t_3<t_4$, increments $W_{t_2}-W_{t_1}$ and $W_{t_4}-W_{t_3}$ are independent
+    \item Trajectories $\omega\in\Omega$ are continuous a.s.
+  \end{enumerate}
+\end{definition}
+
+Now we want to measure, how much price in per cents of a share changes in one model, assuming that it's determined by some deterministic drift with the mean $\mu$ and
+stochastic (random) throws with the standart deviation $\sigma$:
+
+\begin{definition}[Stock Model]
+  $\frac{dS}{S}=\mu dt+\sigma dW\iff dS=\mu Sdt+\sigma SdW$. Denote the price of a call as $C(S,t)$.
+\end{definition}
+
+\begin{lemma}[Itô’s lemma]
+  $\frac{dS}{S}=\mu dt+\sigma dW\iff dS=\mu Sdt+\sigma SdW$. Denote the price of a call as $C(S,t)$.
+\end{lemma}
 
 \end{document}
